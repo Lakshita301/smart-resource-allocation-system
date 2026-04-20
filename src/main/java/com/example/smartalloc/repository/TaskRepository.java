@@ -27,6 +27,10 @@ public class TaskRepository {
         return new ArrayList<>(tasks.values());
     }
 
+    public synchronized Task findById(Long id) {
+        return tasks.get(id);
+    }
+
     public synchronized List<Task> findByStatus(TaskStatus status) {
         return tasks.values()
                 .stream()

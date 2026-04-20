@@ -1,22 +1,19 @@
 package com.example.smartalloc.strategy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StrategyFactory {
 
-    private final FCFSStrategy fcfs;
-    private final PriorityStrategy priority;
-    private final SJFStrategy sjf;
+    private final Map<String, SchedulingStrategy> strategies = new HashMap<>();
 
     public StrategyFactory() {
-        this.fcfs = new FCFSStrategy();
-        this.priority = new PriorityStrategy();
-        this.sjf = new SJFStrategy();
+        strategies.put("FCFS", new FCFSStrategy());
+        strategies.put("PRIORITY", new PriorityStrategy());
+        strategies.put("SJF", new SJFStrategy());
     }
 
     public SchedulingStrategy getStrategy(String type) {
-        return switch (type) {
-            case "PRIORITY" -> priority;
-            case "SJF" -> sjf;
-            default -> fcfs;
-        };
+        return strategies.getOrDefault(type, strategies.get("FCFS"));
     }
 }

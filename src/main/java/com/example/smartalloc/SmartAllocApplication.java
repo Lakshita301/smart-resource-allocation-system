@@ -2,6 +2,7 @@ package com.example.smartalloc;
 
 import com.example.smartalloc.controller.TaskController;
 import com.example.smartalloc.model.ResourcePool;
+import com.example.smartalloc.repository.AllocationLogRepository;
 import com.example.smartalloc.repository.TaskRepository;
 import com.example.smartalloc.service.SchedulerService;
 import com.example.smartalloc.strategy.StrategyFactory;
@@ -13,10 +14,11 @@ public class SmartAllocApplication {
     public static void main(String[] args) {
         try {
             TaskRepository repository = new TaskRepository();
+            AllocationLogRepository logs = new AllocationLogRepository();
             ResourcePool pool = ResourcePool.getInstance();
             StrategyFactory factory = new StrategyFactory();
-            SchedulerService scheduler = new SchedulerService(repository, pool, factory);
-            TaskController controller = new TaskController(repository, scheduler, pool);
+            SchedulerService scheduler = new SchedulerService(repository, pool, factory, logs);
+            TaskController controller = new TaskController(repository, scheduler, pool, logs);
 
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
             controller.registerRoutes(server);
